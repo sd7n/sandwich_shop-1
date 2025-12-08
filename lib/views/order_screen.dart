@@ -77,9 +77,8 @@ class _OrderScreenState extends State<OrderScreen> {
         breadType: _selectedBreadType,
       );
 
-      setState(() {
-        _cart.add(sandwich, quantity: _quantity);
-      });
+      final Cart cart = Provider.of<Cart>(context, listen: false);
+      cart.add(sandwich, quantity: _quantity);
 
       String sizeText;
       if (_isFootlong) {
@@ -110,7 +109,7 @@ class _OrderScreenState extends State<OrderScreen> {
     Navigator.push(
       context,
       MaterialPageRoute<void>(
-        builder: (BuildContext context) => CartScreen(cart: _cart),
+        builder: (BuildContext context) => const CartScreen(),
       ),
     );
   }
@@ -264,10 +263,14 @@ class _OrderScreenState extends State<OrderScreen> {
                 backgroundColor: Colors.purple,
               ),
               const SizedBox(height: 20),
-              Text(
-                'Cart: ${_cart.countOfItems} items - £${_cart.totalPrice.toStringAsFixed(2)}',
-                style: normalText,
-                textAlign: TextAlign.center,
+              Consumer<Cart>(
+                builder: (context, cart, child) {
+                  return Text(
+                    'Cart: ${cart.countOfItems} items - £${cart.totalPrice.toStringAsFixed(2)}',
+                    style: normalText,
+                    textAlign: TextAlign.center,
+                  );
+                },
               ),
               const SizedBox(height: 20),
             ],
