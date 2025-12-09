@@ -5,6 +5,7 @@ import 'package:sandwich_shop/models/cart.dart';
 import 'package:sandwich_shop/models/sandwich.dart';
 import 'package:sandwich_shop/views/profile_screen.dart';
 import 'package:sandwich_shop/views/settings_screen.dart';
+import 'package:sandwich_shop/views/common_widgets.dart';
 import 'package:provider/provider.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -162,18 +163,9 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            height: 100,
-            child: Image.asset('assets/images/logo.png'),
-          ),
-        ),
-        title: Text(
-          'Sandwich Counter',
-          style: heading1,
-        ),
+      appBar: const CommonAppBar(
+        title: 'Sandwich Counter',
+        showCartIndicator: false,
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -280,58 +272,11 @@ class _OrderScreenState extends State<OrderScreen> {
                 backgroundColor: Colors.grey,
               ),
               const SizedBox(height: 20),
-              Consumer<Cart>(
-                builder: (context, cart, child) {
-                  return Text(
-                    'Cart: ${cart.countOfItems} items - £${cart.totalPrice.toStringAsFixed(2)}',
-                    style: normalText,
-                    textAlign: TextAlign.center,
-                  );
-                },
-              ),
+              const CartSummaryText(),
               const SizedBox(height: 20),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class StyledButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-
-  final IconData icon;
-
-  final String label;
-
-  final Color backgroundColor;
-
-  const StyledButton({
-    super.key,
-    required this.onPressed,
-    required this.icon,
-    required this.label,
-    required this.backgroundColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    ButtonStyle myButtonStyle = ElevatedButton.styleFrom(
-      backgroundColor: backgroundColor,
-      foregroundColor: Colors.white,
-      textStyle: normalText,
-    );
-
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: myButtonStyle,
-      child: Row(
-        children: [
-          Icon(icon),
-          const SizedBox(width: 8),
-          Text(label),
-        ],
       ),
     );
   }
